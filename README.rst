@@ -2,8 +2,8 @@ EPOC EMOTIV Programming
 =======================
 Intro
 -----
- A revolutionary personal interface for brain computer interacton.The Emotiv EPOC headset uses a total of 16 sensors 
-(14 for EEG data, 2 for gyro motions) to tune into electrical signals produced by the brain to detect user thoughts,
+ A revolutionary personal interface for brain computer interacton.The Emotiv EPOC headset uses a total of 16 sensors, 
+ 14 for EEG data, 2 for gyro motions to tune into electrical signals produced by the brain to detect user thoughts,
  feelings, expressions and their mental state.
 
 Requirements
