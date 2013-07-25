@@ -44,7 +44,7 @@ Building & Running
 Patches are welcomed
 --------------------
 
-..code-block:: bash
+.. code-block:: bash
 
     $ git clone https://github.com/codehunks/emotiv.git "emotiv"
     $ cd emotiv
