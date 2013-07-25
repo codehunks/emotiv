@@ -41,3 +41,10 @@ Building & Running
 #. F7 for building (succeed without errors)
 #. F5 for running your app.
 
+Patches are welcomed
+--------------------
+
+..code-block bash
+
+    $ git clone https://github.com/codehunks/emotiv.git "emotiv"
+    $ cd emotiv
