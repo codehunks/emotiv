@@ -54,5 +54,4 @@ References
 --------------------
 
 [1] `EPOC EMOTIV <http://www.emotiv.com>`_
-
 [2] `OpenGL <http://www.opengl.org/resources/libraries/glut/>`_
