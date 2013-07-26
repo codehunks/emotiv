@@ -53,5 +53,5 @@ Patches are welcomed
 References
 --------------------
 
-[1] <a href="http://www.emotiv.com">http://www.emotiv.com</a>
-[2] <a href="http://www.opengl.org/resources/libraries/glut/">http://www.opengl.org/resources/libraries/glut/</a>
+[1] http://www.emotiv.com
+[2] http://www.opengl.org/resources/libraries/glut/
