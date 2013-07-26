@@ -54,4 +54,5 @@ References
 --------------------
 
 [1] http://www.emotiv.com
+
 [2] http://www.opengl.org/resources/libraries/glut/
