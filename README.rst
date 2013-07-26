@@ -53,6 +53,6 @@ Patches are welcomed
 References
 --------------------
 
-[1] http://www.emotiv.com
+[1] `EPOC EMOTIV <http://www.emotiv.com>`_
 
-[2] http://www.opengl.org/resources/libraries/glut/
+[2] `OpenGL <http://www.opengl.org/resources/libraries/glut/>`_
