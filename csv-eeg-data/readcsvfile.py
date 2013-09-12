@@ -1,15 +1,22 @@
+# Root Mean Square value of the received data.
+# this file produces one centralised value of the data.
+
 import csv
 import math
 #reading the csv file
 with open('eegs.csv', 'rt') as csvfile:
     spamreader = csv.reader(csvfile, delimiter=' ', quotechar='|')
     a_list = []
+    
+    row_count = 0
     for row in spamreader:
         a_list.append( row[0].split(','))
-        #change value of n to number of samples and m to number of columns in csv file
+        row_count += 1
+        #change value of m to number of columns in csv file
     m = 4
-    n = 16
+    n = row_count
     x = [0]*m
+    
     print ("RMS Corresponding to Engagement, Frustration, Meditation, Excitation are:")
     for j in range(0,m):
         for i in range(1,n):
