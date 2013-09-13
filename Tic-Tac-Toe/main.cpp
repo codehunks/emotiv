@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include<iostream>
 #include<conio.h>
+#include<process.h>
 #include<sstream>
 #include<map>
 
@@ -32,7 +33,11 @@ float oldXVal =0, oldYVal = 0;
 unsigned long pass = 0,globalElapsed = 0;
 int count = 0;
 float x;
-int visited[10]={0,0,0,0,0,0,0,0,0,0},turn=1;
+int visited[10]={0,0,0,0,0,0,0,0,0,0},turn=1, flagvar=-1,ctr=0,flagwin=1;
+int drawn[10]={0,0,0,0,0,0,0,0,0,0};
+
+int startX,startY,endX,endY,row,col;
+
 
 bool readytocollect					= false;
 
@@ -114,9 +119,9 @@ void affective(void)
 			affFrus = ES_AffectivGetFrustrationScore(eState);
 			affMed = ES_AffectivGetMeditationScore(eState);
 			affExcitement = ES_AffectivGetExcitementShortTermScore(eState);
-			printf("Exc:%f, Fru:%f, Med:%f, Eng:%f\n",affExcitement,affFrus,affMed,affEngegement);
+			//printf("Exc:%f, Fru:%f, Med:%f, Eng:%f\n",affExcitement,affFrus,affMed,affEngegement);
 			affSmile = ES_ExpressivGetSmileExtent(eState);
-			printf("Smile:%f",affSmile);
+			//printf("Smile:%f",affSmile);
 			//ofs2 <<affEngegement<<","<<	affFrus<<","<<affMed<<","<<affExcitement<<","<<std::endl;
 
 			}
@@ -124,7 +129,7 @@ void affective(void)
 			//Sleep(100);
 }
 void drawCrossMark(int startX,int startY,int endX,int endY) {
-	glColor3f(0.0,1.0,0.0);
+	glColor3f(1.0,0.0,0.0);
 
 	glBegin(GL_LINES);
     	glVertex2d(startX,startY);
@@ -176,9 +181,9 @@ void checkBoxNumber(){
 		}
 	
 	int box_num =  col_num+row_num-1;
-	int startX,startY,endX,endY;
-	int row = ceil(box_num/3.0);
-	int col = box_num-((row-1)*3);
+	
+	row = ceil(box_num/3.0);
+	col = box_num-((row-1)*3);
 
 	startX = (row-1)*200;
 	startY = (col-1)*200; 
@@ -187,22 +192,64 @@ void checkBoxNumber(){
 	
 	if(visited[box_num]!=1) {
 		if(turn==1) {
-		drawCrossMark(startY, startX, endY,endX);
+		//drawCrossMark(startY, startX, endY,endX);
 		turn*= -1;
 		visited[box_num]=1;
 	}
     else{
-    	drawBigO(endX,endY);
+    	//drawBigO(endX,endY);
     	turn*= -1;
-    	visited[box_num]=1;
+		visited[box_num]=1;
     }
+	drawn[box_num] = turn;
 	}
-    
+	if(drawn[1]==drawn[4] && drawn[4]==drawn[7] && drawn[1]!=0)
+		flagvar = 1;
+	else if(drawn[2]==drawn[5] && drawn[5]==drawn[8] && drawn[2]!=0)
+		flagvar = 1;
+	else if(drawn[3]==drawn[6] && drawn[6]==drawn[9] && drawn[3]!=0)
+		flagvar = 1;
+	else if(drawn[1]==drawn[2] && drawn[2]==drawn[3] && drawn[1]!=0)
+		flagvar = 1;
+	else if(drawn[4]==drawn[5] && drawn[5]==drawn[6] && drawn[4]!=0)
+		flagvar = 1;
+	else if(drawn[7]==drawn[8] && drawn[8]==drawn[9] && drawn[7]!=0)
+		flagvar = 1;
+	else if(drawn[1]==drawn[5] && drawn[5]==drawn[9] && drawn[5]!=0)
+		flagvar = 1;
+	else if(drawn[3]==drawn[5] && drawn[5]==drawn[7] && drawn[7]!=0)
+		flagvar = 1;
+	for(int i=1;i<10;i++){
+		if(visited[i]!=1){
+			ctr=0;
+			break;}
+		else
+			ctr++;
+	}
+	if(ctr==9)
+		flagvar=1;
 }
+
+void drawnState() {
+	for(int i=1;i<10;i++) {
+		row = ceil(i/3.0);
+		col = i-((row-1)*3);
+
+		startX = (row-1)*200;
+		startY = (col-1)*200; 
+		endX = (startX+200);
+		endY = (startY+200);
+		if(drawn[i]<0)
+			drawBigO(endY,endX);
+		if(drawn[i]>0)
+			drawCrossMark(startY, startX, endY,endX);
+	}
+}
+
 void drawSquare1()
-{	if (affSmile > 0.3)
+{	if (affSmile > 0.06)
 	{
-		std::cout <<" You're smiling "; 
+		//std::cout <<" You're smiling "; 
 		glColor3fv(COLOR[4]);
 		checkBoxNumber();
 	}
@@ -221,7 +268,7 @@ void drawSquare1()
     	glVertex3f(MOUSEx-10,MOUSEy+10,0);
   
     glEnd();
-	glFlush();
+	//glFlush();
 	
 }   
 
@@ -272,16 +319,61 @@ void drawBoard() {
     //drawCrossMark(200,200,400,0);
     //drawBigO(400,400);
 }
+void drawText(const char *msg){
+	glRasterPos2f(-1,-1);
+	while(*msg){
+		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10,*msg);
+		glutStrokeCharacter(GLUT_STROKE_ROMAN,*msg++);
+	}
+	//glutBitmapString(GLUT_BITMAP_HELVETICA_12,msg);
+}
+void youwin(){
+	glColor3f(0.4,0.6,0.8);
+	if(ctr==9){
+		drawText("Match Drawn");
+				if (flagwin == 1){ 
+		
+		std::cout<<"\nMatch Drawn";
 
+			flagwin = 2;
+		}
+	}
+	else{
+		if (flagwin == 1){ 
+		std::cout<<"\nYou Win !";
+		flagwin = 2;
+		}
+		drawText("You Win ! ");
+		
+	}
+	drawnState();
+	glFlush();
+	//getch();
+	//exit(0);
+}
 
 void display(void)
 {   
     //glClearColor (0.0,0.0,0.0,1.0);
     //glClear (GL_COLOR_BUFFER_BIT);
-    glLoadIdentity();
-    drawBoard();
-    drawSquare1();
-    glFlush();
+    if(flagvar==-1){
+		glClear(GL_COLOR_BUFFER_BIT);
+		glLoadIdentity();
+		drawBoard();
+		drawnState();
+		drawSquare1();
+		glFlush();
+		glutPostRedisplay();
+		glutSwapBuffers();
+	}
+	if(flagvar==1){
+		glLoadIdentity();
+		drawBoard();
+		drawnState();
+		youwin();
+		glFlush();
+
+	}
 }
 
 void updateScreen(void)
@@ -290,6 +382,14 @@ void updateScreen(void)
     EE_HeadsetGetGyroDelta(0,&gyroX,&gyroY);
 	MOUSEx += gyroX/20;
 	MOUSEy += gyroY/20;
+	if(MOUSEx<10)
+		MOUSEx=10;
+	if(MOUSEx>590)
+		MOUSEx=590;
+	if(MOUSEy<10)
+		MOUSEy=10;
+	if(MOUSEy>590)
+		MOUSEy=590;
 	
 	//printf ("gyrox is %d gyroy is %d ",gyroX, gyroY);
 	glutPostRedisplay();
@@ -345,11 +445,25 @@ int main(int argc, char** argv)
     glutInitWindowPosition(0,0);
     glutCreateWindow("Tic Tac Toe");
     glutDisplayFunc(display);
-    glutReshapeFunc(reshape);
     glutMotionFunc(motion);
     glutIdleFunc(updateScreen);
+    glutReshapeFunc(reshape);
     glutMainLoop(); 
-      
+	/*INPUT input;
+	input.type = INPUT_MOUSE;
+	input.mi.dx=0;
+	input.mi.dy=0;
+	input.mi.dwFlags=(MOUSEEVENTF_ABSOLUTE|MOUSEEVENTF_MOVE|MOUSEEVENTF_RIGHTDOWN|MOUSEEVENTF_RIGHTUP);
+	input.mi.mouseData=0;
+	input.mi.dwExtraInfo=NULL;
+	SendInput(1,&input,sizeof(INPUT));
+	*/
+
+	/*HWND h = (hwnd of window);
+	WORD mouseX = 10;
+	WORD mouseY = 10;
+	PostMessage(hwnd,WM_LBUTTONDOWN,0,MAKELPARAM(mouseX,mouseY));
+  */
    EE_EngineDisconnect();
    EE_EmoStateFree(eState);
    EE_EmoEngineEventFree(eEvent);	
